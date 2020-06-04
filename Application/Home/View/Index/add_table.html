@@ -1,0 +1,122 @@
+<include file="Index:base" />
+<div id="content">
+    <div class="left_menu">
+        <ul id="nav_dot">
+            {$menu_html}
+        </ul>
+    </div>
+    <div class="m-right">
+        <div class="right-nav">
+            <ul>
+                <li><img src="Public/images/home.png"></li>
+                <li style="margin-left:25px;">您当前的位置：</li>
+                <li><a href="#">{$position_1}</a></li>
+                <li>></li>
+                <li><a href="#">{$position_2}</a></li>
+            </ul>
+        </div>
+        <div class="main" style="text-align: center;">
+            <form id='editRealMsgForm' enctype="multipart/form-data" action="#"  method="post">
+                <input type="hidden" name="id" value="{$info['id']}">
+                项目：
+                  {$project_html}
+                数据表名：
+                <input  name="table_name" value="{$info['table_name']}">
+                数据表备注：
+                <input  name="table_annotation" value="{$info['table_annotation']}">
+                <br/><br/>
+                <table class="table" width="100%">
+                    <thead align="center">
+                    <tr>
+                        <th width="15%">字段名（英文）</th>
+                        <th width="10%">字段类型</th>
+                        <th width="10%">最大长度</th>
+                        <th width="10%">默认值</th>
+                        <th width="25%">字段注释</th>
+                        <th width="10%">索引类型</th>
+                        <th width="20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody align="center">
+                    <volist name="list" id="vo" key="k" >
+                        <tr>
+                            <td><input type="text" name="field_name[]" value="{$vo.field_name}"></td>
+                            <td>
+                                <select  name="field_type[]">
+                                    <option value="int" <if condition="$vo['field_type'] == 'int'">selected</if>>整数</option>
+                                    <option value="varchar" <if condition="$vo['field_type'] == 'varchar'">selected</if>>文字</option>
+                                    <option value="text" <if condition="$vo['field_type'] == 'text'">selected</if>>超长文字</option>
+                                </select>
+                            </td>
+                            <td><input type="text" name="max_length[]" value="{$vo.max_length}"></td>
+                            <td><input type="text" name="default_value[]" value="{$vo.default_value}"></td>
+                            <td><input type="text" size="40" name="annotation[]" value="{$vo.annotation}"></td>
+                            <td>
+                                <select  name="index_type[]">
+                                    <option value="Normal" <if condition="$vo['index_type'] == 'Normal'">selected</if>>普通索引</option>
+                                    <option value="Unique" <if condition="$vo['index_type'] == 'Unique'">selected</if>>唯一索引</option>
+                                </select>
+                            </td>
+                            <td>
+                                <a href="{:U('index/add_case')}&id={$vo.id}&from=search_car"  title="插入"><span>插入</span></a>
+                                <a href="{:U('index/del_case')}&id={$vo.id}&from=search_car"  title="删除"><span>删除</span></a>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <p><input type="submit" value="提交"></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<include file="Index:footer" />
+<script>
+    $(document).ready(function() {
+// 使用 jQuery异步提交表单
+        $('#editRealMsgForm').submit(function() {
+
+            jQuery.ajax({
+
+                url:'{:U("index/add_table")}',
+
+                data:$('#editRealMsgForm').serialize(),
+
+                type:"POST",
+
+                beforeSend:function()
+                {
+                },
+                success:function(data)
+                {
+                    if(data.status == 1){
+                        alert(data.info);
+                        window.location.href = data.url;
+                    }else{
+                        alert(data.info);
+                    }
+                }
+
+            });
+
+            return false;
+
+        });
+
+    });
+</script>
+<style>
+    p {
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+    }
+</style>
+
+
+
+
+

@@ -1,0 +1,134 @@
+<include file="Index:base" />
+<div id="content">
+    <div class="left_menu">
+        <ul id="nav_dot">
+            {$menu_html}
+        </ul>
+    </div>
+    <div class="m-right">
+        <div class="right-nav">
+            <ul>
+                <li><img src="Public/images/home.png"></li>
+                <li style="margin-left:25px;">您当前的位置：</li>
+                <li><a href="#">{$position_1}</a></li>
+                <li>></li>
+                <li><a href="#">{$position_2}</a></li>
+            </ul>
+        </div>
+        <div class="main" style="text-align: center;">
+            <form id='editRealMsgForm' enctype="multipart/form-data" action="#"  method="post">
+                <input type="hidden" name="id" value="{$info['id']}">
+                <p>PIN码：<input type="text" name="pin_code" value="{$info['pin_code']}"> </p>
+                <p>姓名：<input type="text" name="name" value="{$info['name']}"> </p>
+                <p>身份证号码：<input type="text" name="id_card" value="{$info['id_card']}"> </p>
+                <p>案件处理机构：<input type="text" name="company_name" value="{$info['company_name']}"> </p>
+                <p>欺诈金额：<input type="text" name="fraud_amount" placeholder="单位：元" value="{$info['fraud_amount']}"></p>
+                <p>定损报告：</p>
+                <textarea  name="fee_report" rows="15" cols="65">{$info['fee_report']}</textarea>
+<!--                <p>案件处理机构：
+                    {$company_html}
+                </p>-->
+                <p>
+                    车险欺诈类型：
+                    {$fraud_type_html}
+                </p>
+                <input type="hidden" name="criminal_img" id="criminal_img" value="{$info['criminal_img']}">
+                <span>犯罪照片</span>
+                <input type="file" name="file" id="file" onchange="uploadImg();"  >
+                <img src="{$info['criminal_img']}" alt="" id="avatarShow" width="200px" height="200px">
+                <p><input type="submit" value="提交"></p>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Index:footer" />
+<script>
+    jQuery.extend({
+        handleError: function( s, xhr, status, e ) {
+// If a local callback was specified, fire it
+            if ( s.error )
+                s.error( xhr, status, e );
+// If we have some XML response text (e.g. from an AJAX call) then log it in the console
+            else if(xhr.responseText)
+                console.log(xhr.responseText);
+        }
+    });
+    $(document).ready(function() {
+
+// 使用 jQuery异步提交表单
+
+        $('#editRealMsgForm').submit(function() {
+
+            jQuery.ajax({
+
+                url:'{:U("index/add_criminal_case")}',
+
+                data:$('#editRealMsgForm').serialize(),
+
+                type:"POST",
+
+                beforeSend:function()
+                {
+                },
+                success:function(data)
+                {
+                    if(data.status == 1){
+                        alert(data.info);
+                        window.location.href = data.url;
+                    }else{
+                        alert(data.info);
+                    }
+                }
+
+            });
+
+            return false;
+
+        });
+
+    });
+    function uploadImg() {
+        if($("#file").val() != "") {
+            $.ajaxFileUpload({
+                type: "POST",
+                url:'{:U("index/uploadImg")}',//后台接口
+                dataType: "json",
+                fileElementId:"file",  // 文件的id
+                success: function(d){
+                    if(d.code == 1) {
+                        //图片显示
+                        $("#criminal_img").attr("value",d.data.url);
+                        $("#avatarShow").attr("src",d.data.url);
+                    }else{
+                        alert('上传失败')
+                    }
+                },
+                error: function(data, status, e){
+                    var dd = JSON.parse(data.responseText);
+                    if(dd.code == 1) {
+                        //图片显示
+                        $("#criminal_img").attr("value",dd.url);
+                        $("#avatarShow").attr("src",dd.url);
+                    }else{
+                        alert('上传失败')
+                    }
+                },
+            });
+        } else {
+            alert('请先选择文件')
+        }
+    }
+</script>
+<style>
+    p {
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+    }
+</style>
+
+
+
+
