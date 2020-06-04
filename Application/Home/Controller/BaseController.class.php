@@ -25,9 +25,9 @@ class BaseController extends Controller
                         '课程信息管理'=>array('code'=>array('kecheng_list'),'href'=>U("index/kecheng_list")),
                         '学籍信息管理'=>array('code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
                         '成绩信息管理'=>array('code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
-                        '奖惩信息管理'=>array('code'=>array('jiangchen_list'),'href'=>U("index/jiangchen_list")),
+                        '奖惩信息管理'=>array('code'=>array('jiangcheng_list'),'href'=>U("index/jiangcheng_list")),
                     ),
-                    'code'=>array('admin_edit','add_zhuanye','zhuanye_list','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list','jiangchen_list')
+                    'code'=>array('admin_edit','add_zhuanye','zhuanye_list','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list','jiangcheng_list')
                 ),
             );
             $act_name = strtolower(ACTION_NAME);
