@@ -3,6 +3,248 @@ namespace Home\Controller;
 use Think\Controller;
 class IndexController extends BaseController {
 
+    //专业管理
+    public function zhuanye_list(){
+        $postArr['name'] = I('name','','trim');
+        $where = array();
+        if(!empty($postArr['name'])){
+            $where['name']  = array('like', "%{$postArr['name']}%");
+        }
+        $company    = M('zhuanye'); // 实例化User对象
+        $count      = $company->where($where)->count();// 查询满足要求的总记录数
+        $Page       = $this->getPage($count,20);// 实例化分页类 传入总记录数和每页显示的记录数
+        //分页跳转的时候保证查询条件
+        foreach($postArr as $key=>$val) {
+            $Page->parameter[$key]   =   urlencode($val);
+        }
+        $show       = $Page->show();// 分页显示输出
+// 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+        $list = $company->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $this->assign('postArr',$postArr);// 搜索参数
+        $this->assign('list',$list);// 赋值数据集
+        $this->assign('page',$show);// 赋值分页输出
+        $this->display(); // 输出模板
+    }
+
+    //新增专业
+    public function add_zhuanye(){
+        $id         = I('id',0,'intval');
+        $table      = M('zhuanye');
+        if(!empty($id)){
+            $info = $table->where(array('id'=>$id))->find();
+        }
+        if(IS_AJAX){
+            if(empty($_REQUEST['name'])){
+                $this->error('请填写专业名称！');
+            }
+            $data['name']   =  !empty($_REQUEST['name'])?trim($_REQUEST['name']):'';
+            $data['info']   =  !empty($_REQUEST['info'])?trim($_REQUEST['info']):'';
+            if($id){
+                $ret        = $table->where(array('id'=>$id))->save($data);
+            }else{
+                $ret        = $table->add($data);
+            }
+            if($ret){
+                $this->success('操作成功', U('index/zhuanye_list'));
+            }else{
+                $this->error('操作失败');
+            }
+        }else{
+            $this->assign('info',!empty($info)?$info:array());
+            $this->display(); // 输出模板
+        }
+    }
+
+    //删除专业
+    public function del_zhuanye(){
+        $id   = I('id',0,'intval');
+        if(empty($id)){
+            $this->error('非法参数', U('index/zhuanye_list'));
+        }
+        $company    = M('zhuanye');
+        $ret        = $company->where(array('id'=>$id))->delete();
+        if($ret){
+            $this->success('操作成功', U('index/zhuanye_list'));
+        }else{
+            $this->error('操作失败', U('index/zhuanye_list'));
+        }
+    }
+
+
+    //班级管理
+    public function banji_list(){
+        $postArr['name']       = I('name','','trim');
+        $postArr['zhuanye_id'] = I('zhuanye_id',0,'int');
+        $where = array();
+        if(!empty($postArr['name'])){
+            $where['name']  = array('like', "%{$postArr['name']}%");
+        }
+        if(!empty($postArr['zhuanye_id'])){
+            $where['zhuanye_id']  = $postArr['zhuanye_id'];
+        }
+        $company    = M('banji'); // 实例化User对象
+        $count      = $company->where($where)->count();// 查询满足要求的总记录数
+        $Page       = $this->getPage($count,20);// 实例化分页类 传入总记录数和每页显示的记录数
+        //分页跳转的时候保证查询条件
+        foreach($postArr as $key=>$val) {
+            $Page->parameter[$key]   =   urlencode($val);
+        }
+        $show       = $Page->show();// 分页显示输出
+// 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+        $list = $company->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $zhuanye_list      = M('zhuanye')->select();
+        $zhuanye_list      = $this->tranKeyArray($zhuanye_list,'id');
+        if(!empty($list)){
+            foreach ($list as $k=>$v){
+                $list[$k]['zhuanye_name'] = !empty($zhuanye_list[$v['zhuanye_id']]['name'])?$zhuanye_list[$v['zhuanye_id']]['name']:'';
+            }
+        }
+        $zhuanye_html    = $this->getZhuanyeHtml($postArr['zhuanye_id']);
+        $this->assign('zhuanye_html',$zhuanye_html);// 搜索参数
+        $this->assign('postArr',$postArr);// 搜索参数
+        $this->assign('list',$list);// 赋值数据集
+        $this->assign('page',$show);// 赋值分页输出
+        $this->display(); // 输出模板
+    }
+
+    //新增班级
+    public function add_banji(){
+        $id         = I('id',0,'intval');
+        $table      = M('banji');
+        if(!empty($id)){
+            $info = $table->where(array('id'=>$id))->find();
+        }
+        if(IS_AJAX){
+            if(empty($_REQUEST['name'])){
+                $this->error('请填写班级名称！');
+            }
+            if(empty($_REQUEST['zhuanye_id'])){
+                $this->error('请选择专业！');
+            }
+            $data['name']   =  !empty($_REQUEST['name'])?trim($_REQUEST['name']):'';
+            $data['zhuanye_id']   =  !empty($_REQUEST['zhuanye_id'])?intval($_REQUEST['zhuanye_id']):0;
+            if($id){
+                $ret        = $table->where(array('id'=>$id))->save($data);
+            }else{
+                $ret        = $table->add($data);
+            }
+            if($ret){
+                $this->success('操作成功', U('index/banji_list'));
+            }else{
+                $this->error('操作失败');
+            }
+        }else{
+            $zhuanye_html    = $this->getZhuanyeHtml($info['zhuanye_id']);
+            $this->assign('zhuanye_html',$zhuanye_html);// 搜索参数
+            $this->assign('info',!empty($info)?$info:array());
+            $this->display(); // 输出模板
+        }
+    }
+
+    //删除班级
+    public function del_banji(){
+        $id   = I('id',0,'intval');
+        if(empty($id)){
+            $this->error('非法参数', U('index/banji_list'));
+        }
+        $company    = M('banji');
+        $ret        = $company->where(array('id'=>$id))->delete();
+        if($ret){
+            $this->success('操作成功', U('index/banji_list'));
+        }else{
+            $this->error('操作失败', U('index/banji_list'));
+        }
+    }
+
+    private function getZhuanyeHtml($select_id = ''){
+        $select_id = !empty($select_id)?trim($select_id):'';
+        $list   = M('zhuanye')->select();
+        $html   = '<select  name="zhuanye_id">';
+        $html  .= '<option value="">请选择</option>';
+        if(!empty($list)){
+            foreach ($list as $v){
+                if($v['id'] == $select_id){
+                    $html .= '<option value="'.$v['id'].'" selected>'.$v['name'].'</option>';
+                }else{
+                    $html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+                }
+            }
+        }
+        $html .= '</select>';
+        return $html;
+    }
+
+
+    //课程管理
+    public function kecheng_list(){
+        $postArr['name']       = I('name','','trim');
+        $where = array();
+        if(!empty($postArr['name'])){
+            $where['name']  = array('like', "%{$postArr['name']}%");
+        }
+        $company    = M('kecheng'); // 实例化User对象
+        $count      = $company->where($where)->count();// 查询满足要求的总记录数
+        $Page       = $this->getPage($count,20);// 实例化分页类 传入总记录数和每页显示的记录数
+        //分页跳转的时候保证查询条件
+        foreach($postArr as $key=>$val) {
+            $Page->parameter[$key]   =   urlencode($val);
+        }
+        $show       = $Page->show();// 分页显示输出
+// 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+        $list = $company->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $this->assign('postArr',$postArr);// 搜索参数
+        $this->assign('list',$list);// 赋值数据集
+        $this->assign('page',$show);// 赋值分页输出
+        $this->display(); // 输出模板
+    }
+
+    //新增课程
+    public function add_kecheng(){
+        $id         = I('id',0,'intval');
+        $table      = M('kecheng');
+        if(!empty($id)){
+            $info = $table->where(array('id'=>$id))->find();
+        }
+        if(IS_AJAX){
+            if(empty($_REQUEST['name'])){
+                $this->error('请填写班级名称！');
+            }
+            $data['name']   =  !empty($_REQUEST['name'])?trim($_REQUEST['name']):'';
+            $data['info']   =  !empty($_REQUEST['info'])?trim($_REQUEST['info']):'';
+            if($id){
+                $ret        = $table->where(array('id'=>$id))->save($data);
+            }else{
+                $ret        = $table->add($data);
+            }
+            if($ret){
+                $this->success('操作成功', U('index/kecheng_list'));
+            }else{
+                $this->error('操作失败');
+            }
+        }else{
+            $this->assign('info',!empty($info)?$info:array());
+            $this->display(); // 输出模板
+        }
+    }
+
+    //删除课程
+    public function del_kecheng(){
+        $id   = I('id',0,'intval');
+        if(empty($id)){
+            $this->error('非法参数', U('index/kecheng_list'));
+        }
+        $company    = M('kecheng');
+        $ret        = $company->where(array('id'=>$id))->delete();
+        if($ret){
+            $this->success('操作成功', U('index/kecheng_list'));
+        }else{
+            $this->error('操作失败', U('index/kecheng_list'));
+        }
+    }
+
+
+
+
     private function getProjectHtml($select_id = ''){
         $select_id = !empty($select_id)?trim($select_id):'';
         $list   = M('admin_projects')->select();

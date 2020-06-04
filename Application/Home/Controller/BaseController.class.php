@@ -14,34 +14,20 @@ class BaseController extends Controller
         if(!IS_AJAX){
             //生成菜单html
             $menu_arr = array(
-                '数据中心' =>array(
+                '功能菜单' =>array(
                     'list' =>array(
-                        '项目表'=>array('code'=>array('project_list'),'href'=>U("index/project_list")),
-                        '数据表'=>array('code'=>array('table_list'),'href'=>U("index/table_list")),
-                        '菜单表'=>array('code'=>array('menu_list'),'href'=>U("index/menu_list")),
-                        '从车查询'=>array('code'=>array('search_car'),'href'=>U("index/search_car")),
-                        '从人查询'=>array('code'=>array('search_people'),'href'=>U("index/search_people")),
-                        '从修理机构查询'=>array('code'=>array('search_company'),'href'=>U("index/search_company")),
-                        '从手机号查询'=>array('code'=>array('search_phone'),'href'=>U("index/search_phone")),
-                        '录入保险案件'=>array('code'=>array('add_case'),'href'=>U("index/add_case")),
+                        '修改个人密码'=>array('code'=>array('admin_edit'),'href'=>U("index/admin_edit")),
+                        '专业信息添加'=>array('code'=>array('add_zhuanye'),'href'=>U("index/add_zhuanye")),
+                        '专业信息管理'=>array('code'=>array('zhuanye_list'),'href'=>U("index/zhuanye_list")),
+                        '班级信息添加'=>array('code'=>array('add_banji'),'href'=>U("index/add_banji")),
+                        '班级信息管理'=>array('code'=>array('banji_list'),'href'=>U("index/banji_list")),
+                        '课程信息录入'=>array('code'=>array('add_kecheng'),'href'=>U("index/add_kecheng")),
+                        '课程信息管理'=>array('code'=>array('kecheng_list'),'href'=>U("index/kecheng_list")),
+                        '学籍信息管理'=>array('code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
+                        '成绩信息管理'=>array('code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
+                        '奖惩信息管理'=>array('code'=>array('jiangchen_list'),'href'=>U("index/jiangchen_list")),
                     ),
-                    'code'=>array('menu_list','project_list','add_project','table_list','add_table','add_case','del_case','search_car','search_people','search_company','search_phone')
-                ),
-                '菜单设置' =>array(
-                    'list' =>array(
-                        '刑事案件'=>array('code'=>array('criminal_case','add_criminal_case'),'href'=>U("index/criminal_case")),
-                        '风险车辆'=>array('code'=>array('risk_car','add_risk_car'),'href'=>U("index/risk_car")),
-                        '风险人员'=>array('code'=>array('risk_people','add_risk_people'),'href'=>U("index/risk_people")),
-                        '风险机构'=>array('code'=>array('risk_company','add_risk_company'),'href'=>U("index/risk_company")),
-                        '风险手机号'=>array('code'=>array('risk_phone','add_risk_phone'),'href'=>U("index/risk_phone")),
-                    ),
-                    'code'=>array('add_risk_phone','add_risk_company','add_risk_people','add_risk_car','add_criminal_case','criminal_case','risk_car','risk_people','risk_company','risk_phone')
-                ),
-                '权限设置' =>array(
-                    'list' =>array(
-                        '通讯录'=>array('code'=>array('risk_book','add_risk_book'),'href'=>U("index/risk_book")),
-                    ),
-                    'code'=>array('risk_book','add_risk_book')
+                    'code'=>array('admin_edit','add_zhuanye','zhuanye_list','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list','jiangchen_list')
                 ),
             );
             $act_name = strtolower(ACTION_NAME);

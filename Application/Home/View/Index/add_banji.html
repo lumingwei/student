@@ -1,0 +1,78 @@
+<include file="Index:base" />
+<div id="content">
+    <div class="left_menu">
+        <ul id="nav_dot">
+            {$menu_html}
+        </ul>
+    </div>
+    <div class="m-right">
+        <div class="right-nav">
+            <ul>
+                <li><img src="Public/images/home.png"></li>
+                <li style="margin-left:25px;">您当前的位置：</li>
+                <li><a href="#">{$position_1}</a></li>
+                <li>></li>
+                <li><a href="#">{$position_2}</a></li>
+            </ul>
+        </div>
+        <div class="main" style="text-align: center;">
+            <form id='editRealMsgForm' enctype="multipart/form-data" action="#"  method="post">
+                <input type="hidden" name="id" value="{$info['id']}">
+                请选择专业：
+                {$zhuanye_html}
+                <p>班级名称：<input type="text" name="name" value="{$info['name']}"> </p>
+                <p><input type="submit" value="提交"></p>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Index:footer" />
+<script>
+    $(document).ready(function() {
+
+// 使用 jQuery异步提交表单
+
+        $('#editRealMsgForm').submit(function() {
+
+            jQuery.ajax({
+
+                url:'{:U("index/add_banji")}',
+
+                data:$('#editRealMsgForm').serialize(),
+
+                type:"POST",
+
+                beforeSend:function()
+                {
+                },
+                success:function(data)
+                {
+                    if(data.status == 1){
+                        alert(data.info);
+                        window.location.href = data.url;
+                    }else{
+                        alert(data.info);
+                    }
+                }
+
+            });
+
+            return false;
+
+        });
+
+    });
+</script>
+<style>
+    p {
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+    }
+</style>
+
+
+
+

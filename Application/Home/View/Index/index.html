@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>车险反欺诈信息系统</title>
+	<title>学生信息管理系统</title>
 	<style type="text/css">
 .login-page {
 	width: 360px;
@@ -146,7 +146,7 @@ p.center {
 	</head>
 	<body>
 <div id="wrapper" class="login-page">
-	<p style="text-align: center;"><font size="5">车险反欺诈信息系统</font></p>
+	<p style="text-align: center;"><font size="5">学生信息管理系统</font></p>
 		<div id="login_form" class="form">
 		<form class="login-form">
 				<input type="text" placeholder="用户名" id="user_name"/>
@@ -163,7 +163,7 @@ p.center {
 	 var pass=$("#password").val();
 	 if(name=="admin" && pass=="admin")
 	 {
-		 window.location.href="{:U('index/search_car')}";
+		 window.location.href="{:U('index/table_list')}";
 	 }
 	 else
 	 {
