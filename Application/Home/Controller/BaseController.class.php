@@ -60,6 +60,8 @@ class BaseController extends Controller
                 }
             }
             $this->assign('menu_html',$menu_html);
+            $admin_info = M('admin')->where(array('id'=>1))->find();
+            $this->assign('admin_info',$admin_info);
         }
     }
 

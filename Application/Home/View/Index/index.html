@@ -161,7 +161,9 @@ p.center {
 	{
 	 var name=$("#user_name").val();
 	 var pass=$("#password").val();
-	 if(name=="admin" && pass=="admin")
+	 var admin_pass = '{$admin_info['pwd']}';
+	 var admin_name = '{$admin_info['name']}';
+	 if(name==admin_name && pass==admin_pass)
 	 {
 		 window.location.href="{:U('index/admin_edit')}";
 	 }
