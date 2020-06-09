@@ -2,9 +2,6 @@
 namespace Home\Controller;
 use Think\Controller;
 class IndexController extends BaseController {
-    public function login(){
-        $this->display(); // 输出模板
-    }
     //新增专业
     public function admin_edit(){
         $id         = 1;
@@ -1085,7 +1082,6 @@ class IndexController extends BaseController {
 
     //后台首页
     public function index(){
-        $this->redirect('Index/login');
         $this->display(); // 输出模板
     }
 

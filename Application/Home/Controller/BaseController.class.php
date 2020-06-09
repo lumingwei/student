@@ -36,8 +36,8 @@ class BaseController extends Controller
                 $mn = 0;
                 foreach($menu_arr as $k=> $v){
                     $mn++;
-                    $menu_html .= '<li class="selected">';
-                    $menu_html .= '<h4 class="'.'M'.$mn.'"><span><img src="Public/images/666.png"></span><font color="black">'.$k.'</font></h4>';
+                    $menu_html .= '<li>';
+                    $menu_html .= '<h4 class="'.'M'.$mn.'"><span></span>'.$k.'</h4>';
                     if(in_array($act_name,$v['code'])){
                         $this->assign('position_1',$k);
                         $menu_html .= '<div class="list-item">';
@@ -49,11 +49,10 @@ class BaseController extends Controller
                            //if($vv['code'] == $act_name){
                            if(in_array($act_name,$vv['code'])){
                                $this->assign('position_2',$kk);
-                               $menu_html .= '<a href="'.$vv['href'].'" style="color:red;"><img src="Public/images/666.png">'.'<font size="4">'.$kk.'</font></a>';
+                               $menu_html .= '<a href="'.$vv['href'].'" style="color:red;">'.$kk.'</a>';
                            }else{
-                               $menu_html .= '<a href="'.$vv['href'].'"><img src="Public/images/666.png">'.'<font size="4" color="black">'.$kk.'</font></a>';
+                               $menu_html .= '<a href="'.$vv['href'].'">'.$kk.'</a>';
                            }
-                           $menu_html .= '<br/>';
                        }
                     }
                     $menu_html .= '</div>';
@@ -63,7 +62,6 @@ class BaseController extends Controller
             $this->assign('menu_html',$menu_html);
             $admin_info = M('admin')->where(array('id'=>1))->find();
             $this->assign('admin_info',$admin_info);
-            $this->assign('systime',date('Y年m月d日 H:i:s',time()));
         }
     }
 

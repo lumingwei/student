@@ -13,14 +13,12 @@
 <body>
 <div class="top"></div>
 <div id="header">
-    <div class="logo"><font color="black">学生信息管理系统</font></div>
+    <div class="logo">学生信息管理系统</div>
     <div class="navigation">
         <ul>
-            <li><font size="3" color="black">欢迎您：管理员</font></li>
-            <li><font size="3" color="black">{$systime}</font></li>
-        </ul>
-        <ul>
-            <li><a href="{:U('index/login')}"><font size="3" color="black">注销系统</font></a></li>
+            <li>欢迎您！</li>
+            <li><a href="">{$admin_info['name']}</a></li>
+            <li><a href="{:U('index/index')}">退出</a></li>
         </ul>
     </div>
 </div>

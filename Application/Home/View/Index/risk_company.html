@@ -1,0 +1,67 @@
+<include file="Index:base" />
+<div id="content">
+    <div class="left_menu">
+        <ul id="nav_dot">
+            {$menu_html}
+        </ul>
+    </div>
+    <div class="m-right">
+        <div class="right-nav">
+            <ul>
+                <li><img src="Public/images/home.png"></li>
+                <li style="margin-left:25px;">您当前的位置：</li>
+                <li><a href="#">{$position_1}</a></li>
+                <li>></li>
+                <li><a href="#">{$position_2}</a></li>
+            </ul>
+        </div>
+        <div class="main">
+            <form name="search_form" action="{:U('index/risk_company')}" method="post">
+                &nbsp;&nbsp;姓名：  <input type="text" name="name"   value="{$postArr['name']}" size="24"  />
+                &nbsp;身份证号：  <input type="text" name="id_card"   value="{$postArr['id_card']}" size="24"  />
+                &nbsp;手机号：  <input type="text" name="phone"   value="{$postArr['phone']}" size="24"  />
+                &nbsp;驾驶证号：  <input type="text" name="driving_licence"   value="{$postArr['driving_licence']}" size="24"  />
+                <button>查询</button>
+                <a href="{:U('index/add_risk_company')}"  title="新增"><font color="black">新增<font></a>
+                <input type="reset" value="重置">
+            </form>
+            <table class="table" width="100%">
+                <thead align="center">
+                <tr>
+                    <th width="10%">PIN码</th>
+                    <th width="14%">机构名称</th>
+                    <th width="16%">地址</th>
+                    <th width="10%">机构法人</th>
+                    <th width="10%">电话号</th>
+                    <th width="20%">风险人员上报原因</th>
+                    <th width="20%">操作</th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                <volist name="list" id="vo" key="k" >
+                    <tr>
+                        <td><a href="{:U('index/look_case')}&pin_code={$vo.pin_code}">{$vo.pin_code}</a></td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.address}</td>
+                        <td>{$vo.legal_person}</td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.risk_report}</td>
+                        <td>
+                            <a href="{:U('index/add_risk_company')}&id={$vo.id}"  title="修改"><span>修改</span></a>
+                            <a href="{:U('index/del_risk_company')}&id={$vo.id}"  title="删除"><span>删除</span></a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div class="pages" style="float:right;">
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Index:footer" />
+
+
+
+
