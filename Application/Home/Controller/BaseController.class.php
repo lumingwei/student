@@ -14,20 +14,15 @@ class BaseController extends Controller
         if(!IS_AJAX){
             //生成菜单html
             $menu_arr = array(
-                '功能菜单' =>array(
+                '' =>array(
                     'list' =>array(
                         '修改个人密码'=>array('code'=>array('admin_edit'),'href'=>U("index/admin_edit")),
-                        '专业信息添加'=>array('code'=>array('add_zhuanye'),'href'=>U("index/add_zhuanye")),
-                        '专业信息管理'=>array('code'=>array('zhuanye_list'),'href'=>U("index/zhuanye_list")),
-                        '班级信息添加'=>array('code'=>array('add_banji'),'href'=>U("index/add_banji")),
-                        '班级信息管理'=>array('code'=>array('banji_list'),'href'=>U("index/banji_list")),
                         '课程信息录入'=>array('code'=>array('add_kecheng'),'href'=>U("index/add_kecheng")),
                         '课程信息管理'=>array('code'=>array('kecheng_list'),'href'=>U("index/kecheng_list")),
-                        '学籍信息管理'=>array('code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
+                        '学生信息管理'=>array('code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
                         '成绩信息管理'=>array('code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
-                        '奖惩信息管理'=>array('code'=>array('jiangcheng_list'),'href'=>U("index/jiangcheng_list")),
                     ),
-                    'code'=>array('admin_edit','add_zhuanye','zhuanye_list','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list','jiangcheng_list')
+                    'code'=>array('admin_edit','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list')
                 ),
             );
             $act_name = strtolower(ACTION_NAME);
@@ -37,23 +32,24 @@ class BaseController extends Controller
                 foreach($menu_arr as $k=> $v){
                     $mn++;
                     $menu_html .= '<li>';
-                    $menu_html .= '<h4 class="'.'M'.$mn.'"><span></span>'.$k.'</h4>';
+                    $menu_html .= '<h4><span></span>'.$k.'</h4>';
                     if(in_array($act_name,$v['code'])){
                         $this->assign('position_1',$k);
-                        $menu_html .= '<div class="list-item">';
+                        $menu_html .= '<div>';
                     }else{
-                        $menu_html .= '<div class="list-item none">';
+                        $menu_html .= '<div>';
                     }
                     if(!empty($v['list'])){
+                        $menu_html .= '<p style="text-align: center;">';
                        foreach($v['list'] as $kk=>$vv){
-                           //if($vv['code'] == $act_name){
                            if(in_array($act_name,$vv['code'])){
                                $this->assign('position_2',$kk);
-                               $menu_html .= '<a href="'.$vv['href'].'" style="color:red;">'.$kk.'</a>';
+                               $menu_html .= '<a href="'.$vv['href'].'" style="color:red;">'.$kk.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                            }else{
-                               $menu_html .= '<a href="'.$vv['href'].'">'.$kk.'</a>';
+                               $menu_html .= '<a href="'.$vv['href'].'">'.$kk.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                            }
                        }
+                        $menu_html .= '</p>';
                     }
                     $menu_html .= '</div>';
                     $menu_html .= '</li>';

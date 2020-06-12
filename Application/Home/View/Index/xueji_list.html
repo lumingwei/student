@@ -18,8 +18,6 @@
         <div class="main">
             <form name="search_form" action="{:U('index/xueji_list')}" method="post">
                 &nbsp;&nbsp;&nbsp;学号：  <input type="text" name="xuehao"   value="{$postArr['xuehao']}" size="24"  />
-                班级
-                {$banji_html}
                 <button>查询</button>
                 <a href="{:U('index/add_xueji')}"  title="新增"><font color="black">新增<font></a>
                 <input type="reset" value="重置条件">
@@ -31,11 +29,8 @@
                     <th width="5%">姓名</th>
                     <th width="5%">性别</th>
                     <th width="5%">年龄</th>
-                    <th width="15%">班级</th>
                     <th width="6%">入学时间</th>
                     <th width="6%">毕业时间</th>
-                    <th width="5%">学制</th>
-                    <th width="20%">学校名称</th>
                     <th width="20%">操作</th>
                 </tr>
                 </thead>
@@ -46,11 +41,8 @@
                         <td>{$vo.name}</td>
                         <td>{$vo.sex}</td>
                         <td>{$vo.age}</td>
-                        <td>{$vo.banji_name}</td>
                         <td>{$vo.ruxueshijian}</td>
                         <td>{$vo.biyeshijian}</td>
-                        <td>{$vo.xuezhi}</td>
-                        <td>{$vo.xuexiao_name}</td>
                         <td>
                             <a href="{:U('index/add_xueji')}&stu_id={$vo.stu_id}"  title="修改"><span>修改</span></a>
                             <a href="{:U('index/del_xueji')}&stu_id={$vo.stu_id}"  title="删除"><span>删除</span></a>

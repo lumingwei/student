@@ -24,18 +24,6 @@
                 学校：
                 {$xuexiao_html}
                 </p>
-                <p>学制：
-                    <select name="xuezhi" class="cs">
-                        <option value="">请选择</option>
-                        <option value="两年制" <if condition="$info['xuezhi'] == '两年制'">selected</if>>两年制</option>
-                        <option value="三年制" <if condition="$info['xuezhi'] == '三年制'">selected</if>>三年制</option>
-                        <option value="五年制" <if condition="$info['xuezhi'] == '五年制'">selected</if>>五年制</option>
-                    </select>
-                </p>
-                <p>
-                班级：
-                    {$banji_html}
-                </p>
                 <p>性别：
                     <select name="sex">
                         <option value="男" <if condition="$info['sex'] == '男'">selected</if>>男</option>
