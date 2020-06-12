@@ -4,10 +4,10 @@ use Think\Controller;
 class IndexController extends BaseController {
     //新增专业
     public function admin_edit(){
-        $id         = 1;
-        $table      = M('admin');
+        $id         = $_SESSION['stu_id'];
+        $table      = M('xueji');
         if(!empty($id)){
-            $info = $table->where(array('id'=>$id))->find();
+            $info = $table->where(array('stu_id'=>$id))->find();
         }
         if(IS_AJAX){
             if(empty($_REQUEST['name'])){
@@ -233,6 +233,9 @@ class IndexController extends BaseController {
         if(!empty($postArr['kecheng_id'])){
             $where['kecheng_id']  = $postArr['kecheng_id'];
         }
+        if(empty($_SESSION['is_admin'])){
+            $where['stu_id'] = $_SESSION['stu_id'];
+        }
         $company    = M('chengji'); // 实例化User对象
         $count      = $company->where($where)->count();// 查询满足要求的总记录数
         $Page       = $this->getPage($count,20);// 实例化分页类 传入总记录数和每页显示的记录数
@@ -260,7 +263,12 @@ class IndexController extends BaseController {
         $this->assign('postArr',$postArr);// 搜索参数
         $this->assign('list',$list);// 赋值数据集
         $this->assign('page',$show);// 赋值分页输出
-        $this->display(); // 输出模板
+        if($_SESSION['is_admin']){
+            $this->display(); // 输出模板
+        }else{
+            $this->display('index/chengji_list1'); // 输出模板
+        }
+
     }
 
     //新增成绩
@@ -363,6 +371,16 @@ class IndexController extends BaseController {
         $this->display(); // 输出模板
     }
 
+    public function gere_info(){
+        $info = M('xueji')->where(1)->find();
+        $banji_html    = $this->getBanjiHtml($info['banji_id']);
+        $this->assign('banji_html',$banji_html);// 搜索参数
+        $xuexiao_html    = $this->getXuexiaoHtml($info['xuexiao_id']);
+        $this->assign('xuexiao_html',$xuexiao_html);// 搜索参数
+        $this->assign('info',$info);// 赋值分页输出
+        $this->display(); // 输出模板
+    }
+
     //新增学籍
     public function add_xueji(){
         $id         = I('stu_id',0,'intval');
@@ -425,7 +443,7 @@ class IndexController extends BaseController {
     private function getXuexiaoHtml($select_id = ''){
         $select_id = !empty($select_id)?trim($select_id):'';
         $list   = M('xuexiao')->select();
-        $html   = '<select  name="xuexiao_id">';
+        $html   = '<select  name="xuexiao_id" id="xuexiao_id">';
         $html  .= '<option value="">请选择</option>';
         if(!empty($list)){
             foreach ($list as $v){
@@ -461,6 +479,23 @@ class IndexController extends BaseController {
     //后台首页
     public function index(){
         $this->display(); // 输出模板
+    }
+
+    //后台首页
+    public function login(){
+        $pwd          = I('pwd','','trim');
+        $name         = I('name','','trim');
+        if($pwd && $name){
+            $info         = M('xueji')->where(array('pwd'=>$pwd,'name'=>$name))->find();
+        }
+        if($info){
+            $_SESSION['is_admin'] = $info['is_admin'];
+            $_SESSION['stu_id']   = $info['stu_id'];
+            $_SESSION['detail']   = $info;
+            $this->success('操作成功');
+        }else{
+            $this->error('操作失败');
+        }
     }
 
 

@@ -9,18 +9,18 @@
     <script type="text/javascript" src="Public/js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="Public/js/menu.js"></script>
 </head>
-
+<style type="text/css">
+    body{
+        background:url(Public/images/{$img_num}.jpg)  no-repeat center center !important;
+        background-size:cover !important;
+        background-attachment:fixed !important;
+        background-color:#CCCCCC !important;
+    }
+</style>
 <body>
 <div class="top"></div>
 <div id="header">
     <div class="logo" style="text-align: center;">学生信息管理系统</div>
-    <div class="navigation">
-        <ul>
-            <li>欢迎您！</li>
-            <li><a href="">{$admin_info['name']}</a></li>
-            <li><a href="{:U('index/index')}">退出</a></li>
-        </ul>
-    </div>
 </div>
 
 

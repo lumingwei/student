@@ -1,0 +1,89 @@
+<include file="Index:base" />
+<div id="content">
+    <div class="left_menu">
+        <ul id="nav_dot">
+            {$menu_html}
+        </ul>
+    </div>
+    <div class="m-right">
+        <div class="right-nav">
+            <ul>
+                <li style="margin-left:25px;">您当前的位置：</li>
+                <li><a href="#">{$position_1}</a></li>
+                <li>></li>
+                <li><a href="#">{$position_2}</a></li>
+            </ul>
+        </div>
+        <div class="main" style="text-align: center;">
+            <form id='editRealMsgForm' enctype="multipart/form-data" action="#"  method="post">
+                <input type="hidden" name="stu_id" value="{$info['stu_id']}">
+                <p>学生学号：<input type="text" name="xuehao" value="{$info['xuehao']}"readonly> </p>
+                <p>学生姓名：<input type="text" name="name" value="{$info['name']}"readonly> </p>
+                <p>
+                    学校：
+                    {$xuexiao_html}
+                </p>
+                <p>性别：
+                    <select name="sex" disabled="disabled">
+                        <option value="男" <if condition="$info['sex'] == '男'">selected</if>>男</option>
+                        <option value="女" <if condition="$info['sex'] == '女'">selected</if>>女</option>
+                    </select>
+                </p>
+                <p>年龄：<input type="text" name="age" value="{$info['age']}"readonly> </p>
+                <p>入学时间<input type="date" name="ruxueshijian" value="{$info['ruxueshijian']}"readonly/></p>
+                <p>毕业时间<input type="date" name="biyeshijian" value="{$info['biyeshijian']}"readonly/></p>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Index:footer" />
+<script>
+    $("#xuexiao_id").attr("disabled","disabled");
+    $(document).ready(function() {
+
+// 使用 jQuery异步提交表单
+
+        $('#editRealMsgForm').submit(function() {
+
+            jQuery.ajax({
+
+                url:'{:U("index/add_xueji")}',
+
+                data:$('#editRealMsgForm').serialize(),
+
+                type:"POST",
+
+                beforeSend:function()
+                {
+                },
+                success:function(data)
+                {
+                    if(data.status == 1){
+                        alert(data.info);
+                        window.location.href = data.url;
+                    }else{
+                        alert(data.info);
+                    }
+                }
+
+            });
+
+            return false;
+
+        });
+
+    });
+</script>
+<style>
+    p {
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+    }
+</style>
+
+
+
+

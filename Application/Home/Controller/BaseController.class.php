@@ -10,22 +10,41 @@ class BaseController extends Controller
 {
     public function  __construct()
     {
+        $act_name = strtolower(ACTION_NAME);
         parent::__construct();
         if(!IS_AJAX){
-            //生成菜单html
-            $menu_arr = array(
-                '' =>array(
-                    'list' =>array(
-                        '修改个人密码'=>array('code'=>array('admin_edit'),'href'=>U("index/admin_edit")),
-                        '课程信息录入'=>array('code'=>array('add_kecheng'),'href'=>U("index/add_kecheng")),
-                        '课程信息管理'=>array('code'=>array('kecheng_list'),'href'=>U("index/kecheng_list")),
-                        '学生信息管理'=>array('code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
-                        '成绩信息管理'=>array('code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
+            if(!isset($_SESSION['is_admin']) && $act_name != 'login' && $act_name != 'index'){
+                $this->redirect('index/index');
+            }
+            if($_SESSION['is_admin']){
+                //生成菜单html
+                $menu_arr = array(
+                    '' =>array(
+                        'list' =>array(
+                            '修改个人密码'=>array('img_num'=>2,'code'=>array('admin_edit'),'href'=>U("index/admin_edit")),
+                            '课程信息录入'=>array('img_num'=>3,'code'=>array('add_kecheng'),'href'=>U("index/add_kecheng")),
+                            '课程信息管理'=>array('img_num'=>4,'code'=>array('kecheng_list'),'href'=>U("index/kecheng_list")),
+                            '学生信息管理'=>array('img_num'=>5,'code'=>array('xueji_list'),'href'=>U("index/xueji_list")),
+                            '成绩信息管理'=>array('img_num'=>6,'code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
+                            '个人信息管理'=>array('img_num'=>1,'code'=>array('gere_info'),'href'=>U("index/gere_info")),
+                        ),
+                        'code'=>array('admin_edit','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list')
                     ),
-                    'code'=>array('admin_edit','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list')
-                ),
-            );
-            $act_name = strtolower(ACTION_NAME);
+                );
+            }else{
+                //生成菜单html
+                $menu_arr = array(
+                    '' =>array(
+                        'list' =>array(
+                            '修改个人密码'=>array('img_num'=>2,'code'=>array('admin_edit'),'href'=>U("index/admin_edit")),
+                            '个人信息'=>array('img_num'=>5,'code'=>array('gere_info'),'href'=>U("index/gere_info")),
+                            '成绩信息'=>array('img_num'=>6,'code'=>array('chengji_list'),'href'=>U("index/chengji_list")),
+                        ),
+                        'code'=>array('admin_edit','add_banji','banji_list','add_kecheng','kecheng_list','xueji_list','chengji_list')
+                    ),
+                );
+            }
+
             $menu_html = '';
             if(!empty($menu_arr)){
                 $mn = 0;
@@ -44,6 +63,7 @@ class BaseController extends Controller
                        foreach($v['list'] as $kk=>$vv){
                            if(in_array($act_name,$vv['code'])){
                                $this->assign('position_2',$kk);
+                               $this->assign('img_num',$vv['img_num']);
                                $menu_html .= '<a href="'.$vv['href'].'" style="color:red;">'.$kk.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                            }else{
                                $menu_html .= '<a href="'.$vv['href'].'">'.$kk.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -55,9 +75,8 @@ class BaseController extends Controller
                     $menu_html .= '</li>';
                 }
             }
+            $this->assign('is_admin',!empty($_SESSION['is_admin'])?1:0);
             $this->assign('menu_html',$menu_html);
-            $admin_info = M('admin')->where(array('id'=>1))->find();
-            $this->assign('admin_info',$admin_info);
         }
     }
 

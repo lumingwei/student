@@ -8,7 +8,6 @@
     <div class="m-right">
         <div class="right-nav">
             <ul>
-                <li><img src="Public/images/home.png"></li>
                 <li style="margin-left:25px;">您当前的位置：</li>
                 <li><a href="#">{$position_1}</a></li>
                 <li>></li>
@@ -18,7 +17,7 @@
         <div class="main" style="text-align: center;">
             <form id='editRealMsgForm' enctype="multipart/form-data" action="#"  method="post">
                 <input type="hidden" name="id" value="{$info['id']}">
-                <p>登录名：<input type="text" name="name" value="{$info['name']}"> </p>
+                <p>登录名：<input type="text" name="name" value="{$info['name']}" <if condition="$is_admin != 1">readonly</if>> </p>
                 <p>原密码：<input type="text" name="old_pwd" value="{$info['pwd']}"> </p>
                 <p>新密码：<input type="text" name="pwd" value=""> </p>
                 <p><input type="submit" value="提交"></p>
